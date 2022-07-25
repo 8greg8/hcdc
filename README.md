@@ -1,92 +1,298 @@
 # Human-Centered Deep Compositional Model for Handling Occlusions
 
+***Gregor Koporec, Janez Perš***
 
+This repository contains code, data, and instructions for experiments appeared in the paper "Human-Centered Deep Compositional Model for Handling Occlusions".
 
-## Getting started
+## Paper Abstract
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+![Overview](doc/imgs/overview.png)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Despite their powerful discriminative abilities, Convolutional Neural Networks (CNNs) lack the properties of generative models. This leads to a decreased performance in environments where objects are poorly visible. Solving such a problem by adding more training samples can quickly lead to a combinatorial explosion, therefore the underlying architecture has to be changed instead. This work proposes a Human-Centered Deep Compositional model (HCDC) that combines low-level visual discrimination of a CNN and the high-level reasoning of a Hierarchical Compositional model (HCM). Defined as a transparent model, it can be optimized to real-world environments by adding compactly encoded domain knowledge from human studies and physical laws. The new FridgeNetv2 dataset and a mixture of publicly available datasets are used as a benchmark. The experimental results show the proposed model is explainable, has higher discriminative and generative power, and better handles the occlusion than the current state-of-the-art Mask-RCNN in instance segmentation tasks.
 
-## Add your files
+## Getting Started with Datasets
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+<!--### Requirements-->
+
+### FridgeNetv2 Dataset
+
+![Samples from FridgeNetv2 dataset](doc/imgs/fridgenet_dset.png)
+
+FridgeNetv2 Dataset belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](/Gorenje%20Terms%20of%20Use.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.docx) and send it to Gregor at gregor.koporec@gorenje.com.
+
+Once accepted, we will send you the link to our download link.
+
+If you have not received a response within a week, it is likely that your email is bouncing - please check this before sending repeat requests.
+
+### PCMix Dataset
+
+![Samples from PCMix dataset](doc/imgs/pcmix_dset.png)
+
+PCMix dataset is publicly available dataset that consists of Pascal VOC 2010, MS COCO, Car Parts, and Pascal-Part dataset. Each dataset has the corresponding terms of use that must be respected upon usage:
+
+- **Pascal VOC 2010**: [Flickr Terms & Conditions of Use](https://www.flickr.com/help/terms)
+- **MS COCO**: [Terms of Use](https://cocodataset.org/#termsofuse)
+- **Car Parts Dataset**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- **Pascal-Part Dataset**: [Unknown license](http://roozbehm.info/pascal-parts/pascal-parts.html)
+
+Original dataset was created in the following way:
+
+- **train**
+  - Person category from Pascal Parts trainval dataset
+  - Car category from Car Parts train dataset
+- **val**
+  - Person category from Pascal Parts val dataset
+  - Car category from Car Parts train dataset
+- **test**
+  - Person category from MS COCO 2017 val dataset occluded by Pascal VOC 2010 occluders (coco_ocln folder)
+  - Car category from Car Parts test dataset occluded by Pascal VOC 2010 occluders
+
+Augmented dataset was created by augmenting the original dataset.
+
+#### 1. Prerequisites
+
+##### Pascal VOC 2010
+
+1. Download and extract Pascal VOC train and validation data (1.3 GB) to `pascal_voc` folder.
+
+   ```bash
+   wget http://host.robots.ox.ac.uk/pascal/VOC/voc2010/VOCtrainval_03-May-2010.tar
+   tar -xvf VOCtrainval_03-May-2010.tar -C pascal_voc
+   ```
+
+##### MS COCO
+
+1. Download MS COCO 2017 validation images (1 GB). Follow the instructions from <https://cocodataset.org/#download>.
+
+2. Create a separate folder `coco_ocln` with the following structure:
+
+   ```text
+   coco_ocln
+   |  annotations
+   |  test
+   |  train
+   |  val
+   ```
+
+3. To occlude images with `person` category, change `configs/base_occlude_coco_format.yaml` and `configs/occlude/occlude_coco.yaml` according to your use case. Then create occluded dataset by `python dataset.py --cfg configs/occlude/occlude_coco.yaml`
+
+#### 2. Car Parts Dataset
+
+1. Download [Car Parts Dataset](https://github.com/dsmlr/Car-Parts-Segmentation) (28 MB)
+
+2. Create a separate folder `car_parts_dataset` with the following structure:
+
+   ```text
+   car_parts_dataset
+   |
+   |--orig
+   |  |  annotations
+   |  |  JPEGImages
+   |
+   |--pcformat
+   |  |  annotations
+   |  |  test
+   |  |  train
+   |  |  val
+   |  
+   |--ocln
+      |  annotations  
+      |  test
+      |  train
+      |  val
+   ```
+
+3. Move/copy all images from `Car-Parts-Segmentation/testset/JPEGImages` and `Car-Parts-Segmentation/trainingset/JPEGImages` to `car_parts_dataset/orig/JPEGImages`.
+
+4. Move/copy all annotations from `Car-Parts-Segmentation/testset/` and `Car-Parts-Segmentation/trainingset` to `car_parts_dataset/orig/annotations`.
+
+5. Open `correct_carparts.ipynb` notebook. Correct paths according to your directory structure. Run all cells to correct the dataset annotations and split training data to train and validation set. Finally, link, move, or copy train and validation data and accompanying annotations to `car_parts_dataset/ocln` folder.
+
+6. Correct configuration files `configs/base_occlude_coco_format.yaml` and `configs/occlude/occlude_carparts.yaml` according to your use case.  Run `python dataset.py --cfg configs/occlude/occlude_carparts.yaml` to occlude test set by using *Pascal VOC 2010*.
+
+#### 3. Pascal-Part Dataset
+
+1. Download and extract Pascal-Part Dataset training and validation set (78 MB) to `pascal_voc/VOCdevkit/VOC2010`
+
+   ```bash
+   wget http://roozbehm.info/pascal-parts/trainval.tar.gz
+   tar -xzvf trainval.tar.gz -C pascal_voc/VOCdevkit/VOC2010
+   ```
+
+2. Change `configs/base_pascalparts_person.yaml`, `configs/pascalparts/person_train.yaml`, and `configs/pascalparts/person_val.yaml` according to your use case. Run `pascalparts_person_dset.sh` to create `Pascal Parts Person Dataset` in PCMix format.
+
+3. Run `subset_pascalparts_person.ipynb` notebook to get validation subset.
+
+#### 4. Merging and Creating Final PCMix Dataset
+
+1. Open `notebooks/join_to_grmix.ipynb` notebook and update paths according to your use case. Run all cells in order to merge all modified datasets into original PCMix Dataset.
+
+2. Run `tools/grmix_aug.sh` script in order to create PCMix Dataset with offline augmentations.
+
+#### 5. Inspecting Proper Dataset Creation
+
+Every dataset created by the above procedure can be inspected using `notebooks/inspect_dset.ipynb` notebook. Additionally, *Pascal-Part Person dataset* can be further inspected by using `notebooks/inspect_pascalparts_person_dset.ipynb` and *PCMix dataset* can be inspected by using `notebooks/inspect_grmix_dataset.ipynb` notebook.
+
+## Getting Started with the models and API
+
+The models and the API belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](/Gorenje%20Terms%20of%20Use.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.docx) and send it to Gregor at gregor.koporec@gorenje.com.
+
+Once accepted, we will send you the link to our download link.
+
+If you have not received a response within a week, it is likely that your email is bouncing - please check this before sending repeat requests.
+
+## COCO Dataset Format Specification
+
+COCO dataset is JSON file, which has dictionary as a top value. Each dictionary attribute has a collection if items (nested dictionaries.) Basic structure of the dataset is as follows:
 
 ```
-cd existing_repo
-git remote add origin http://rdegitlab.gorenje.si/predevelopment/electronics/ai/hcdc.git
-git branch -M main
-git push -uf origin main
+dataset{
+    "info": info,
+    "images": [image],
+    "annotations": [annotation],
+    "licenses": [license],
+    "categories": [category]
+}
 ```
 
-## Integrate with your tools
+**Note**:
 
-- [ ] [Set up project integrations](http://rdegitlab.gorenje.si/predevelopment/electronics/ai/hcdc/-/settings/integrations)
+- All ID values start from `1`.
+- Urls are relate paths from dataset root directory
+- Additional attributes not found in originial COCO dataset are tagged by `*`
 
-## Collaborate with your team
+### Info record
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Info is a dictionary, containing metadata about the dataset.
 
-## Test and Deploy
+```
+info{
+    "year": int,
+    "version": str,
+    "description": str,
+    "contributor": str,
+    "url": str,
+    "date_created": datetime,
+}
+```
 
-Use the built-in continuous integration in GitLab.
+`url` is always empty in gorenje.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### Image record
 
-***
+Image is a dictionary containing metadata about the images.
 
-# Editing this README
+```
+image{
+    "id": int,
+    "width": int,
+    "height": int,
+    "file_name": str,
+    "license": int,
+    "flickr_url": str,
+    "coco_url": str,
+    "date_captured": datetime,
+    *"bimg_id": int,
+    *"occupancy": float,
+    *"iou": float
+}
+```
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Additional attribute explanation:
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- `file_name`: image filename or basename. It doesn't contain any folders or subfolders.
+- `flickr_url`: Always empty string.
+- `coco_url`: Path to image file relative to dataset folder.
+- `bimg_id`: Blender image id.
+- `occupancy`: Occupancy of the shelf as 3D format metric.
+- `iou`: Occupancy as intersection over union. 2D format metric.
 
-## Name
-Choose a self-explaining name for your project.
+### License record
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+License is a dictionary containing metadata about the license for images in the dataset. For gorenje 'Gorenje Copyright' license is used. It is situated in root folder of the dataset and named `LICENSE`.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+license{
+    "id": int,
+    "name": str,
+    "url": str,
+}
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+`url` is path to license file relative to root dataset folder. It should always be `./LICENSE`.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### Annotation record
+
+Annotation metadata in a dictionary form:
+
+```
+annotation{
+    "id": int,
+    "image_id": int,
+    "category_id": int,
+    "segmentation": RLE or [polygon],
+    "area": float,
+    "bbox": [x,y,width,height],
+    "iscrowd": 0 or 1,
+    *"is_occluded": bool,
+    *"occluders": [int],
+    *"spawn_id": int
+}
+```
+
+Additional attribute explanation:
+
+- `segmentation`: Always as [polygon] in JSON file.
+- `iscrowd`: Always `0`.
+- `is_occluded`: Whether the annotated object is occluded.
+- `occluders`: List of annotation ids that are occluders to this annotation.
+- `spawn_id`: Spawn ID from Blender rendering task.
+
+### Category record
+
+Category metadata in a dictionary form:
+
+```
+category{
+    "id": int,
+    "name": str,
+    "supercategory": str,
+}
+```
+
+<!--## Usage TODO-->
+
+## Known issues
+
+If you use too big BATCH_SIZE for pascalparts dataset (e.g., 10) you will get the error
+`multiprocessing.pool.MaybeEncodingError: Error sending result: '<imgaug.augmentables.batches.UnnormalizedBatch object at 0x7fd7dbde7588>'. Reason: 'error("'i' format requires -2147483648 <= number <= 2147483647",)'`. A bit of googling indicates that this error can appear when a single batch exceeds 1GB of size in memory. It should be fixed by decreasing the batch size.
+
+## Citation
+
+If you make use of this repository, please cite the following reference in any publications:
+
+```bibtex
+@Unpublished{Koporec2022,
+  author  = {Gregor Koporec and Janez Per{\v{s}}},
+  note    = {2nd revision in Pattern Recognition},
+  title   = {Human-Centered Deep Compositional Model for Handling Occlusions},
+  year    = {2022},
+  journal = {Pattern Recognition},
+  pages   = {35},
+}
+```
+
+## Acknowledgement
+
+This work was supported by Gorenje, d. o. o. and the Slovenian Research Agency (ARRS) [research projects J2-9433 and J2-2506 and research program P2-0095].
 
 ## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+For support contact:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Gregor Koporec - gregor.koporec@gorenje.com
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Copyright (C) 2022 GORENJE d. o. o. - All Rights Reserved
