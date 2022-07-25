@@ -74,7 +74,7 @@ Augmented dataset was created by augmenting the original dataset.
    |  val
    ```
 
-3. To occlude images with `person` category, change `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_coco.yaml` according to your use case. Then create occluded dataset by `python dataset.py --cfg configs/occlude/occlude_coco.yaml`
+3. To occlude images with `person` category, change `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_coco.yaml` according to your use case. Then create occluded dataset by `python tools/dataset/dataset.py --cfg configs/occlude/occlude_coco.yaml`
 
 #### 2. Car Parts Dataset
 
@@ -108,7 +108,7 @@ Augmented dataset was created by augmenting the original dataset.
 
 5. Open `notebooks/dataset/correct_carparts.ipynb` notebook. Correct paths according to your directory structure. Run all cells to correct the dataset annotations and split training data to train and validation set. Finally, link, move, or copy train and validation data and accompanying annotations to `car_parts_dataset/ocln` folder.
 
-6. Correct configuration files `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_carparts.yaml` according to your use case.  Run `python dataset.py --cfg configs/dataset/occlude/occlude_carparts.yaml` to occlude test set by using *Pascal VOC 2010*.
+6. Correct configuration files `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_carparts.yaml` according to your use case.  Run `python tools/dataset/dataset.py --cfg configs/dataset/occlude/occlude_carparts.yaml` to occlude test set by using *Pascal VOC 2010*.
 
 #### 3. Pascal-Part Dataset
 
@@ -119,7 +119,7 @@ Augmented dataset was created by augmenting the original dataset.
    tar -xzvf trainval.tar.gz -C pascal_voc/VOCdevkit/VOC2010
    ```
 
-2. Change `configs/dataset/base_pascalparts_person.yaml`, `configs/dataset/pascalparts/person_train.yaml`, and `configs/dataset/pascalparts/person_val.yaml` according to your use case. Run `pascalparts_person_dset.sh` to create `Pascal Parts Person Dataset` in PCMix format.
+2. Change `configs/dataset/base_pascalparts_person.yaml`, `configs/dataset/pascalparts/person_train.yaml`, and `configs/dataset/pascalparts/person_val.yaml` according to your use case. Run `./tools/dataset/pascalparts_person_dset.sh` to create `Pascal Parts Person Dataset` in PCMix format.
 
 3. Run `notebooks/dataset/subset_pascalparts_person.ipynb` notebook to get validation subset.
 
@@ -127,7 +127,7 @@ Augmented dataset was created by augmenting the original dataset.
 
 1. Open `notebooks/dataset/join_to_grmix.ipynb` notebook and update paths according to your use case. Run all cells in order to merge all modified datasets into original PCMix Dataset.
 
-2. Run `tools/grmix_aug.sh` script in order to create PCMix Dataset with offline augmentations.
+2. Run `tools/dataset/grmix_aug.sh` script in order to create PCMix Dataset with offline augmentations.
 
 #### 5. Inspecting Proper Dataset Creation
 
