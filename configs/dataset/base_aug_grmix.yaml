@@ -1,1 +1,10 @@
-../../../robot-simulation/fridge_dataset/configs/base_aug_grmix.yaml
+DATASET:
+  TYPE: "aug_coco"
+  PATH: "/data/dataset/grmix/aug"
+  IMG_EXT: "jpg"
+AUG:
+  RUN: True
+  N_JOBS: -1
+  CHUNK_SIZE: 16
+OUTPUT:
+  PATH: "/home/gregork/workspace/fridge/robot-simulation/out/dataset/grmix"

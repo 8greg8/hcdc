@@ -1,1 +1,10 @@
-../../../robot-simulation/fridge_dataset/configs/base_occlude_coco_format.yaml
+DATASET:
+  TYPE: "ocln_coco"
+OCLN:
+  LIMITED_TRYING_TIMES: 40
+  MAX_OCCLUDERS_COUNT: 0 # disable additional non overlapped occluders
+  MIN_SCALE: 0.5
+  BOUNDARY_CONSTRAINT: 25
+  OVERLAP_CONSTRAINT: 5
+  LIBS:
+    PATH: "/data/dataset/pascal/pascal_voc/VOCdevkit/VOC2010"

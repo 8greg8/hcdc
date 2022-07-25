@@ -1,1 +1,12 @@
-../../../../robot-simulation/fridge_dataset/configs/occlude/occlude_coco.yaml
+_BASE_: "../base_occlude_coco_format.yaml"
+
+DATASET:
+  PATH: "/data/dataset/coco/coco_ocln"
+  COCO:
+    NAME: "MS COCO"
+    SET: "val"
+    CLASS_NAMES: ["person"]
+DB:
+  PATH: "/data/dataset/coco/coco2017/annotations/instances_val2017.json"
+OUTPUT:
+  PATH: "/home/gregork/workspace/fridge/robot-simulation/out/dataset/ocln_coco"

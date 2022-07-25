@@ -1,1 +1,13 @@
-../../../../robot-simulation/fridge_dataset/configs/aug/grmix_train.yaml
+_BASE_: "../base_aug_grmix.yaml"
+
+DATASET:
+  COCO:
+    SET: "train"
+DB:
+  PATH: "/data/dataset/grmix/orig"
+  PARTS: "/data/dataset/grmix/orig/annotations/train_parts.json"
+  WHOLES: "/data/dataset/grmix/orig/annotations/train_wholes.json"
+AUG:
+  TYPE: "train"
+  BATCH_SIZE: 6
+  PATH: "/home/gregork/workspace/fridge/robot-simulation/data/grmix_train.aug"

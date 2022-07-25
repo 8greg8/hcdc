@@ -1,1 +1,21 @@
-../../../robot-simulation/fridge_dataset/configs/base_pascalparts_person.yaml
+DATASET:
+  TYPE: "pascalparts"
+  PATH: "/data/dataset/pascal/pascalparts_person"
+  IMG_EXT: "jpg"
+  PASCALPARTS:
+    CLASS_SPLIT: False
+    CLASS_NAMES: ["person"]
+PARTS:
+  USING: True
+  NAME_TRANSFORM_PATH: "/home/gregork/workspace/fridge/robot-simulation/fridge_dataset/configs/pascalparts/name_transform.json"
+OUTPUT:
+  PATH: "/home/gregork/workspace/fridge/robot-simulation/out/dataset/pascalparts"
+DB:
+  PATH: "/data/dataset/pascal/pascal_voc/VOCdevkit/VOC2010"
+AUG:
+  RUN: False
+  N_JOBS: 1
+  CHUNK_SIZE: 16
+  BATCH_SIZE: 1
+SEG:
+  USING_OCLNS: 0

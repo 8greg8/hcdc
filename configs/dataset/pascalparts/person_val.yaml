@@ -1,1 +1,6 @@
-../../../../robot-simulation/fridge_dataset/configs/pascalparts/person_val.yaml
+_BASE_: "../base_pascalparts_person.yaml"
+
+DATASET:
+  PASCALPARTS:
+    SET: "val"
+    SPLIT: "val"

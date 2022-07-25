@@ -1,1 +1,15 @@
-../../../../robot-simulation/fridge_dataset/configs/occlude/occlude_carparts.yaml
+_BASE_: "../base_occlude_coco_format.yaml"
+
+DATASET:
+  PATH: "/data/dataset/car-parts-segmentation/ocln"
+  COCO:
+    NAME: "Car Parts"
+    SET: "test"
+    CLASS_NAMES: [] # if empty use all names
+DB:
+  PATH: "/data/dataset/car-parts-segmentation/grformat/annotations/test_wholes.json"
+OUTPUT:
+  PATH: "/home/gregork/workspace/fridge/robot-simulation/out/dataset/ocln_carparts"
+OCLN:
+  MAX_OCCLUDERS_COUNT: 12 # disable additional non overlapped occluders
+  MIN_SCALE: 0.75
