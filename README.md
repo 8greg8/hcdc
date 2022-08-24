@@ -145,7 +145,7 @@ If you have not received a response within a week, it is likely that your email 
 
 COCO dataset is JSON file, which has dictionary as a top value. Each dictionary attribute has a collection if items (nested dictionaries.) Basic structure of the dataset is as follows:
 
-```
+```json
 dataset{
     "info": info,
     "images": [image],
@@ -165,7 +165,7 @@ dataset{
 
 Info is a dictionary, containing metadata about the dataset.
 
-```
+```json
 info{
     "year": int,
     "version": str,
@@ -182,7 +182,7 @@ info{
 
 Image is a dictionary containing metadata about the images.
 
-```
+```json
 image{
     "id": int,
     "width": int,
@@ -211,8 +211,7 @@ Additional attribute explanation:
 
 License is a dictionary containing metadata about the license for images in the dataset. For gorenje 'Gorenje Copyright' license is used. It is situated in root folder of the dataset and named `LICENSE`.
 
-```
-
+```json
 license{
     "id": int,
     "name": str,
@@ -226,7 +225,7 @@ license{
 
 Annotation metadata in a dictionary form:
 
-```
+```json
 annotation{
     "id": int,
     "image_id": int,
@@ -253,7 +252,7 @@ Additional attribute explanation:
 
 Category metadata in a dictionary form:
 
-```
+```json
 category{
     "id": int,
     "name": str,
