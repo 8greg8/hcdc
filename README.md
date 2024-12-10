@@ -269,16 +269,29 @@ If you use too big BATCH_SIZE for pascalparts dataset (e.g., 10) you will get th
 
 ## Citation
 
-If you make use of this repository, please cite the following reference in any publications:
+If you make use of this repository, please cite the following references in any publications:
 
 ```bibtex
-@Unpublished{Koporec2022,
-  author  = {Gregor Koporec and Janez Per{\v{s}}},
-  note    = {2nd revision in Pattern Recognition},
-  title   = {Human-Centered Deep Compositional Model for Handling Occlusions},
-  year    = {2022},
-  journal = {Pattern Recognition},
-  pages   = {35},
+@InProceedings{Koporec2019,
+  author    = {Koporec, Gregor and Per{\v{s}}, Janez},
+  booktitle = {2019 IEEE/CVF International Conference on Computer Vision Workshop (ICCVW)},
+  pages     = {2532-2540},
+  title     = {Deep Learning Performance in the Presence of Significant Occlusions - An Intelligent Household Refrigerator Case},
+  year      = {2019},
+  doi       = {10.1109/ICCVW.2019.00310}}
+}
+```
+
+```bibtex
+@Article{Koporec2023,
+  author   = {Koporec, Gregor and Per{\v{s}}, Janez},
+  journal  = {Pattern Recognition},
+  title    = {Human-centered deep compositional model for handling occlusions},
+  year     = {2023},
+  issn     = {0031-3203},
+  pages    = {109397},
+  volume   = {138},
+  doi      = {10.1016/j.patcog.2023.109397}
 }
 ```
 
