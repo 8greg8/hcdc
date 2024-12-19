@@ -30,7 +30,7 @@ If you have not received a response within a week, it is likely that your email 
 
 PCMix dataset is publicly available dataset that consists of Pascal VOC 2010, MS COCO, Car Parts, and Pascal-Part dataset. Each dataset has the corresponding terms of use that must be respected upon usage:
 
-- **Pascal VOC 2010**: [Flickr Terms & Conditions of Use](https://www.flickr.com/help/terms)
+- **Pascal VOC 2010**: [Flickr Terms &amp; Conditions of Use](https://www.flickr.com/help/terms)
 - **MS COCO**: [Terms of Use](https://cocodataset.org/#termsofuse)
 - **Car Parts Dataset**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 - **Pascal-Part Dataset**: [Unknown license](http://roozbehm.info/pascal-parts/pascal-parts.html)
@@ -62,8 +62,7 @@ Augmented dataset was created by augmenting the original dataset.
 
 ##### MS COCO
 
-1. Download MS COCO 2017 validation images (1 GB). Follow the instructions from <https://cocodataset.org/#download>.
-
+1. Download MS COCO 2017 validation images (1 GB). Follow the instructions from [https://cocodataset.org/#download](https://cocodataset.org/#download).
 2. Create a separate folder `coco_ocln` with the following structure:
 
    ```text
@@ -73,13 +72,11 @@ Augmented dataset was created by augmenting the original dataset.
    |  train
    |  val
    ```
-
 3. To occlude images with `person` category, change `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_coco.yaml` according to your use case. Then create occluded dataset by `python tools/dataset/dataset.py --cfg configs/occlude/occlude_coco.yaml`
 
 #### 2. Car Parts Dataset
 
 1. Download [Car Parts Dataset](https://github.com/dsmlr/Car-Parts-Segmentation) (28 MB)
-
 2. Create a separate folder `car_parts_dataset` with the following structure:
 
    ```text
@@ -101,13 +98,9 @@ Augmented dataset was created by augmenting the original dataset.
       |  train
       |  val
    ```
-
 3. Move/copy all images from `Car-Parts-Segmentation/testset/JPEGImages` and `Car-Parts-Segmentation/trainingset/JPEGImages` to `car_parts_dataset/orig/JPEGImages`.
-
 4. Move/copy all annotations from `Car-Parts-Segmentation/testset/` and `Car-Parts-Segmentation/trainingset` to `car_parts_dataset/orig/annotations`.
-
 5. Open `notebooks/dataset/correct_carparts.ipynb` notebook. Correct paths according to your directory structure. Run all cells to correct the dataset annotations and split training data to train and validation set. Finally, link, move, or copy train and validation data and accompanying annotations to `car_parts_dataset/ocln` folder.
-
 6. Correct configuration files `configs/dataset/base_occlude_coco_format.yaml` and `configs/dataset/occlude/occlude_carparts.yaml` according to your use case.  Run `python tools/dataset/dataset.py --cfg configs/dataset/occlude/occlude_carparts.yaml` to occlude test set by using *Pascal VOC 2010*.
 
 #### 3. Pascal-Part Dataset
@@ -118,15 +111,12 @@ Augmented dataset was created by augmenting the original dataset.
    wget http://roozbehm.info/pascal-parts/trainval.tar.gz
    tar -xzvf trainval.tar.gz -C pascal_voc/VOCdevkit/VOC2010
    ```
-
 2. Change `configs/dataset/base_pascalparts_person.yaml`, `configs/dataset/pascalparts/person_train.yaml`, and `configs/dataset/pascalparts/person_val.yaml` according to your use case. Run `./tools/dataset/pascalparts_person_dset.sh` to create `Pascal Parts Person Dataset` in PCMix format.
-
 3. Run `notebooks/dataset/subset_pascalparts_person.ipynb` notebook to get validation subset.
 
 #### 4. Merging and Creating Final PCMix Dataset
 
 1. Open `notebooks/dataset/join_to_grmix.ipynb` notebook and update paths according to your use case. Run all cells in order to merge all modified datasets into original PCMix Dataset.
-
 2. Run `tools/dataset/grmix_aug.sh` script in order to create PCMix Dataset with offline augmentations.
 
 #### 5. Inspecting Proper Dataset Creation
@@ -271,6 +261,8 @@ If you use too big BATCH_SIZE for pascalparts dataset (e.g., 10) you will get th
 
 If you make use of this repository, please cite the following references in any publications:
 
+[https://doi.org/10.1109/ICCVW.2019.00310]()
+
 ```bibtex
 @InProceedings{Koporec2019,
   author    = {Koporec, Gregor and Per{\v{s}}, Janez},
@@ -281,6 +273,9 @@ If you make use of this repository, please cite the following references in any 
   doi       = {10.1109/ICCVW.2019.00310}}
 }
 ```
+
+
+[https://doi.org/10.1016/j.patcog.2023.109397]()
 
 ```bibtex
 @Article{Koporec2023,
