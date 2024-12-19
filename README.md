@@ -2,7 +2,7 @@
 
 ***Gregor Koporec, Janez Perš***
 
-This repository contains code, data, and instructions for experiments appeared in the paper "Human-Centered Deep Compositional Model for Handling Occlusions".
+This repository contains code, data, and instructions for experiments appeared in the paper "Human-Centered Deep Compositional Model for Handling Occlusions". The paper is under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.
 
 ## Paper Abstract
 
@@ -18,7 +18,7 @@ Despite their powerful discriminative abilities, Convolutional Neural Networks (
 
 ![Samples from FridgeNetv2 dataset](doc/imgs/fridgenet_dset.png)
 
-FridgeNetv2 Dataset belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](/Gorenje%20Terms%20of%20Use.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.docx) and send it to Gregor at gregor.koporec@gorenje.com.
+FridgeNetv2 Dataset belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](LICENSE.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.pdf) and send it to Gregor at gregor.koporec@gorenje.com.
 
 Once accepted, we will send you the link to our download link.
 
@@ -125,7 +125,7 @@ Every dataset created by the above procedure can be inspected using `notebooks/d
 
 ## Getting Started with the models and API
 
-The models and the API belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](/Gorenje%20Terms%20of%20Use.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.docx) and send it to Gregor at gregor.koporec@gorenje.com.
+The models and the API belong to the [Gorenje, d. o. o.](http://www.gorenje.com/) and is licensed under [Gorenje Terms of Use](LICENSE.md). The dataset is available only for research purposes under proper user agreements. If you are a qualified researcher and you would like a copy of the dataset for your work, please fill out [this form](doc/HCDC%20Research%20Collection%20User%20License%20Agreement.pdf) and send it to Gregor at gregor.koporec@gorenje.com.
 
 Once accepted, we will send you the link to our download link.
 
@@ -261,7 +261,7 @@ If you use too big BATCH_SIZE for pascalparts dataset (e.g., 10) you will get th
 
 If you make use of this repository, please cite the following references in any publications:
 
-[https://doi.org/10.1109/ICCVW.2019.00310]()
+DOI: [https://doi.org/10.1109/ICCVW.2019.00310]([https://doi.org/10.1109/ICCVW.2019.00310)
 
 ```bibtex
 @InProceedings{Koporec2019,
@@ -274,8 +274,7 @@ If you make use of this repository, please cite the following references in any 
 }
 ```
 
-
-[https://doi.org/10.1016/j.patcog.2023.109397]()
+DOI: [https://doi.org/10.1016/j.patcog.2023.109397](https://doi.org/10.1016/j.patcog.2023.109397)
 
 ```bibtex
 @Article{Koporec2023,
@@ -302,4 +301,6 @@ Gregor Koporec - gregor.koporec@gorenje.com
 
 ## License
 
-Copyright (C) 2022 GORENJE d. o. o. - All Rights Reserved
+[Copyright (C) 2022 GORENJE d. o. o. - All Rights Reserved](COPYRIGHT) 
+
+[Gorenje Terms of Use](LICENSE.md)
